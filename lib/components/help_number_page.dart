@@ -41,7 +41,7 @@ class _HelpNumbersPageState extends State<HelpNumbersPage> {
                   color: mainColor,
                 ),
                 onPressed: () {
-                  _initCall(ngo_contacts[index].toString());
+                  _initCall(ngoContacts[index].toString());
                 },
               ),
             ),

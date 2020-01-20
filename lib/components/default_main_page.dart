@@ -50,7 +50,7 @@ class _DefaultMainPageState extends State<DefaultMainPage> {
                       "assets/flares/morning_and_noon.flr",
                       alignment: Alignment.center,
                       fit: BoxFit.cover,
-                      animation: "Morning",
+                      animation: time.hour < 12 ? "Morning" : "Noon",
                     ),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -63,7 +63,9 @@ class _DefaultMainPageState extends State<DefaultMainPage> {
                             showGreeting == false
                                 ? Container()
                                 : Text(
-                                    'Good Morning!',
+                                    time.hour < 12
+                                        ? 'Good Morning!'
+                                        : 'Good Evening!',
                                     style: TextStyle(
                                         color: mainColor,
                                         fontWeight: FontWeight.normal,

@@ -29,7 +29,7 @@ List ngo = [
   'Ngo10',
 ];
 
-List ngo_contacts = [
+List ngoContacts = [
   '8800418884',
   '8800418884',
   '8800418884',

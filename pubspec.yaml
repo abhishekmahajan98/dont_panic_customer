@@ -37,6 +37,8 @@ dependencies:
   uuid:
   audio:
   call_number:
+  flutter_webview_plugin:
+  connectivity: ^0.4.6+2
 
 dev_dependencies:
   flutter_test:
