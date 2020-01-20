@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dont_panic_customer/constants.dart';
 import 'package:flutter/material.dart';
 
 final _firestore = Firestore.instance;
@@ -19,7 +20,7 @@ class _LostAndFoundState extends State<LostAndFound> {
   String hairColour = "";
   String additionalDetails = "";
   String lostorFound = "";
-  String lostOrFoundGroup = 'lost';
+  String lostOrFoundGroup = 'Lost';
   Widget _buildTF(String label, Function getValue) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -27,8 +28,13 @@ class _LostAndFoundState extends State<LostAndFound> {
         onChanged: getValue,
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
-          border: new OutlineInputBorder(
-              borderSide: new BorderSide(color: Colors.teal)),
+          labelStyle: TextStyle(color: mainColor),
+          border:
+              OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+          enabledBorder:
+              OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+          focusedBorder:
+              OutlineInputBorder(borderSide: BorderSide(color: mainColor)),
           labelText: label,
           contentPadding: EdgeInsets.only(top: 14.0, left: 44.0),
         ),
@@ -43,8 +49,13 @@ class _LostAndFoundState extends State<LostAndFound> {
         onChanged: getValue,
         keyboardType: TextInputType.phone,
         decoration: InputDecoration(
-          border: new OutlineInputBorder(
-              borderSide: new BorderSide(color: Colors.teal)),
+          labelStyle: TextStyle(color: mainColor),
+          border:
+              OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+          enabledBorder:
+              OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+          focusedBorder:
+              OutlineInputBorder(borderSide: BorderSide(color: mainColor)),
           labelText: label,
           contentPadding: EdgeInsets.only(top: 14.0, left: 44.0),
         ),
@@ -55,45 +66,55 @@ class _LostAndFoundState extends State<LostAndFound> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: mainColor,
+        title: Text('Lost or Found'),
+        centerTitle: true,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: ListView(
           children: <Widget>[
-            Row(
-              children: <Widget>[
-                Text(
-                  'Lost:',
-                  style: TextStyle(
-                    color: Colors.black,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: <Widget>[
+                  Text(
+                    'Lost:',
+                    style: TextStyle(
+                      color: Colors.black,
+                    ),
                   ),
-                ),
-                Radio(
-                    value: 'Lost',
-                    groupValue: lostOrFoundGroup,
-                    onChanged: (vl) {
-                      print(vl);
-                      setState(() {
-                        lostOrFoundGroup = vl;
-                        lostorFound = vl;
-                      });
-                    }),
-                Text(
-                  'Found:',
-                  style: TextStyle(
-                    color: Colors.black,
+                  Radio(
+                      value: 'Lost',
+                      groupValue: lostOrFoundGroup,
+                      activeColor: mainColor,
+                      onChanged: (vl) {
+                        print(vl);
+                        setState(() {
+                          lostOrFoundGroup = vl;
+                          lostorFound = vl;
+                        });
+                      }),
+                  Text(
+                    'Found:',
+                    style: TextStyle(
+                      color: Colors.black,
+                    ),
                   ),
-                ),
-                Radio(
-                    value: 'Found',
-                    groupValue: lostOrFoundGroup,
-                    onChanged: (vl) {
-                      print(vl);
-                      setState(() {
-                        lostOrFoundGroup = vl;
-                        lostorFound = vl;
-                      });
-                    }),
-              ],
+                  Radio(
+                      value: 'Found',
+                      groupValue: lostOrFoundGroup,
+                      activeColor: mainColor,
+                      onChanged: (vl) {
+                        print(vl);
+                        setState(() {
+                          lostOrFoundGroup = vl;
+                          lostorFound = vl;
+                        });
+                      }),
+                ],
+              ),
             ),
             _buildTF(
               "Name",
@@ -112,7 +133,7 @@ class _LostAndFoundState extends State<LostAndFound> {
               },
             ),
             _buildTFNumber(
-              "Appx Height",
+              "Approx. Height",
               (value) {
                 setState(() {
                   appxHeight = value;
@@ -120,7 +141,7 @@ class _LostAndFoundState extends State<LostAndFound> {
               },
             ),
             _buildTF(
-              "birthmark",
+              "Birthmark",
               (value) {
                 setState(() {
                   birthMark = value;
@@ -128,7 +149,7 @@ class _LostAndFoundState extends State<LostAndFound> {
               },
             ),
             _buildTF(
-              "place of lost",
+              "Place where lost/found",
               (value) {
                 setState(() {
                   placeOfLost = value;
@@ -169,14 +190,20 @@ class _LostAndFoundState extends State<LostAndFound> {
                 },
                 maxLines: 4,
                 decoration: InputDecoration(
-                  border: new OutlineInputBorder(
-                      borderSide: new BorderSide(color: Colors.teal)),
+                  labelStyle: TextStyle(color: mainColor),
+                  border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black)),
+                  enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey)),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: mainColor)),
                   labelText: "Additional Details",
                   contentPadding: EdgeInsets.only(top: 14.0, left: 44.0),
                 ),
               ),
             ),
             RaisedButton(
+              color: mainColor,
               onPressed: () {
                 _firestore.collection('lost').document().setData({
                   'Name': name,
@@ -190,7 +217,13 @@ class _LostAndFoundState extends State<LostAndFound> {
                   'lostorfound': lostorFound
                 });
               },
-              child: Text('Submit'),
+              child: Text(
+                'Submit',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: MediaQuery.of(context).size.height / 40,
+                ),
+              ),
             )
           ],
         ),

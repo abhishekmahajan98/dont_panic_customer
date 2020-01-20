@@ -36,6 +36,7 @@ dependencies:
   file_picker:
   uuid:
   audio:
+  call_number:
 
 dev_dependencies:
   flutter_test:

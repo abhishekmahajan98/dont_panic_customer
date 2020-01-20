@@ -1,3 +1,4 @@
+import 'package:dont_panic_customer/constants.dart';
 import 'package:flutter/material.dart';
 
 class ChatPage extends StatefulWidget {
@@ -8,6 +9,12 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: mainColor,
+        title: Text('Emergency Chat'),
+        centerTitle: true,
+      ),
+    );
   }
 }

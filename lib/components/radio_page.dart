@@ -20,21 +20,23 @@ class _RadiochatState extends State<Radiochat> {
       body: ListView.builder(
         itemCount: ngo.length,
         itemBuilder: (context, index) {
-          return ListTile(
-            isThreeLine: true,
-            leading: CircleAvatar(
-              child: Icon(
-                Icons.healing,
+          return Card(
+            child: ListTile(
+              isThreeLine: true,
+              leading: CircleAvatar(
+                child: Icon(
+                  Icons.healing,
+                ),
               ),
-            ),
-            title: Text(ngo[index].toString()),
-            subtitle: Text('Description for the ngo'),
-            trailing: IconButton(
-              icon: Icon(
-                FontAwesomeIcons.microphoneAlt,
-                color: mainColor,
+              title: Text(ngo[index].toString()),
+              subtitle: Text('Description for the ngo'),
+              trailing: IconButton(
+                icon: Icon(
+                  FontAwesomeIcons.microphoneAlt,
+                  color: mainColor,
+                ),
+                onPressed: () {},
               ),
-              onPressed: () {},
             ),
           );
         },
