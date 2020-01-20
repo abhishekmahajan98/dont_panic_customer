@@ -23,7 +23,6 @@ class _DefaultMainPageState extends State<DefaultMainPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     Future.delayed(const Duration(seconds: 3, microseconds: 500), () {
       setState(() {
@@ -48,7 +47,7 @@ class _DefaultMainPageState extends State<DefaultMainPage> {
                 background: Stack(
                   children: <Widget>[
                     FlareActor(
-                      "assets/flares/morning_flare.flr",
+                      "assets/flares/morning_and_noon.flr",
                       alignment: Alignment.center,
                       fit: BoxFit.cover,
                       animation: "Morning",
@@ -103,6 +102,7 @@ class _DefaultMainPageState extends State<DefaultMainPage> {
                   playAlarm == true
                       ? FontAwesomeIcons.solidBellSlash
                       : FontAwesomeIcons.solidBell,
+                  color: mainColor,
                 ),
               ),
             ),

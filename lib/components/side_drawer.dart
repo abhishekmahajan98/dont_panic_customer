@@ -1,3 +1,4 @@
+import 'package:dont_panic_customer/constants.dart';
 import 'package:flutter/material.dart';
 
 class SideDrawer extends StatefulWidget {
@@ -8,6 +9,9 @@ class SideDrawer extends StatefulWidget {
 class _SideDrawerState extends State<SideDrawer> {
   @override
   Widget build(BuildContext context) {
-    return Drawer();
+    return Material(
+      color: mainColor,
+      child: Drawer(),
+    );
   }
 }
