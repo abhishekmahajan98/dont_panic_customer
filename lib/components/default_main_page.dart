@@ -1,5 +1,6 @@
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:dont_panic_customer/constants.dart';
 import 'package:dont_panic_customer/models/misc.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,19 @@ class _DefaultMainPageState extends State<DefaultMainPage> {
   bool playAlarm = false;
   var top = 0.0;
   TabController _controller;
+  bool showGreeting = false;
+  DateTime time = DateTime.now();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future.delayed(const Duration(seconds: 3, microseconds: 500), () {
+      setState(() {
+        showGreeting = true;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,28 +48,31 @@ class _DefaultMainPageState extends State<DefaultMainPage> {
                 background: Stack(
                   children: <Widget>[
                     FlareActor(
-                      "assets/flares/ResizingHouse.flr",
+                      "assets/flares/morning_flare.flr",
                       alignment: Alignment.center,
                       fit: BoxFit.cover,
-                      animation: "Demo Mode",
+                      animation: "Morning",
                     ),
                     Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: <Widget>[
-                              FloatingActionButton(
-                                backgroundColor: Colors.indigoAccent,
-                                onPressed: () {},
-                                child: Icon(
-                                  Icons.call,
-                                ),
-                              ),
-                            ],
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            showGreeting == false
+                                ? Container()
+                                : Text(
+                                    'Good Morning!',
+                                    style: TextStyle(
+                                        color: mainColor,
+                                        fontWeight: FontWeight.normal,
+                                        fontSize:
+                                            MediaQuery.of(context).size.height /
+                                                20),
+                                  ),
+                          ],
                         ),
                       ],
                     )
@@ -132,32 +149,53 @@ class _DefaultMainPageState extends State<DefaultMainPage> {
               ),
             ),
             sliver: SliverList(
-              delegate: SliverChildListDelegate([
-                Container(
-                  height: MediaQuery.of(context).size.height,
-                  child: TabBarView(
-                    controller: _controller,
-                    children: <Widget>[
-                      ListView.builder(
-                        itemCount: todo.length,
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            leading: Icon(
-                              FontAwesomeIcons.solidCircle,
-                              size: MediaQuery.of(context).size.height / 70,
-                            ),
-                            title: Text(todo[index].toString()),
-                          );
-                        },
-                      ),
-                      Container(),
-                    ],
+              delegate: SliverChildListDelegate(
+                [
+                  Container(
+                    height: MediaQuery.of(context).size.height,
+                    child: TabBarView(
+                      controller: _controller,
+                      children: <Widget>[
+                        ListView.builder(
+                          itemCount: todo.length,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              leading: Icon(
+                                FontAwesomeIcons.solidCircle,
+                                size: MediaQuery.of(context).size.height / 70,
+                              ),
+                              title: Text(todo[index].toString()),
+                            );
+                          },
+                        ),
+                        ListView.builder(
+                          itemCount: todo.length,
+                          itemBuilder: (context, index) {
+                            return Card(
+                              child: ListTile(
+                                title: Text(todo[index].toString()),
+                                subtitle: Text('Published on: ' +
+                                    time.day.toString() +
+                                    '/' +
+                                    time.month.toString() +
+                                    '/' +
+                                    time.year.toString() +
+                                    ' ' +
+                                    time.hour.toString() +
+                                    ':' +
+                                    time.second.toString()),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ]),
+                ],
+              ),
             ),
           ),
-        )
+        ),
       ],
     );
   }
