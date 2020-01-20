@@ -34,7 +34,7 @@ class _OfflinePageState extends State<OfflinePage> {
           ),
           ListTile(
             title: Text(
-              'Please connect to our wifi and check again',
+              'Please connect to our WiFi and check again.',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.black,

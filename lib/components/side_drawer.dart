@@ -11,7 +11,20 @@ class _SideDrawerState extends State<SideDrawer> {
   Widget build(BuildContext context) {
     return Material(
       color: mainColor,
-      child: Drawer(),
+      child: Drawer(
+        child: ListView(
+          children: <Widget>[
+            InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, '/share_location_page');
+              },
+              child: ListTile(
+                title: Text('Panic'),
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }

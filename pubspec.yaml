@@ -39,6 +39,10 @@ dependencies:
   call_number:
   flutter_webview_plugin:
   connectivity: ^0.4.6+2
+  location:
+  provider: ^3.0.0
+  google_maps_flutter: ^0.5.21+15
+  geolocator: ^5.2.0
 
 dev_dependencies:
   flutter_test:

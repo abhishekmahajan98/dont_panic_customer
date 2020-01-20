@@ -46,12 +46,19 @@ class _DefaultMainPageState extends State<DefaultMainPage> {
               return FlexibleSpaceBar(
                 background: Stack(
                   children: <Widget>[
-                    FlareActor(
-                      "assets/flares/morning_and_noon.flr",
-                      alignment: Alignment.center,
-                      fit: BoxFit.cover,
-                      animation: time.hour < 12 ? "Morning" : "Noon",
-                    ),
+                    time.hour < 12
+                        ? FlareActor(
+                            "assets/flares/morning_and_noon.flr",
+                            alignment: Alignment.center,
+                            fit: BoxFit.cover,
+                            animation: "Morning",
+                          )
+                        : FlareActor(
+                            "assets/flares/noon.flr",
+                            alignment: Alignment.center,
+                            fit: BoxFit.cover,
+                            animation: "Noon",
+                          ),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
