@@ -1,5 +1,6 @@
 import 'package:audio/audio.dart';
 import 'package:audioplayers/audio_cache.dart';
+import 'package:dont_panic_customer/constants.dart';
 import 'package:dont_panic_customer/models/misc.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ class _FloodPageState extends State<FloodPage> {
   bool playAlarm = false;
   var top = 0.0;
   TabController _controller;
+  DateTime time = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -33,29 +35,36 @@ class _FloodPageState extends State<FloodPage> {
               return FlexibleSpaceBar(
                 background: Stack(
                   children: <Widget>[
-                    FlareActor(
-                      "assets/flares/ResizingHouse.flr",
-                      alignment: Alignment.center,
-                      fit: BoxFit.cover,
-                      animation: "Demo Mode",
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: <Widget>[
-                              FloatingActionButton(
-                                backgroundColor: Colors.indigoAccent,
-                                onPressed: () {},
-                                child: Icon(
-                                  Icons.call,
-                                ),
-                              ),
-                            ],
+                    time.hour < 12
+                        ? FlareActor(
+                            "assets/flares/morning_and_noon.flr",
+                            alignment: Alignment.center,
+                            fit: BoxFit.cover,
+                            animation: "Morning",
+                          )
+                        : FlareActor(
+                            "assets/flares/noon.flr",
+                            alignment: Alignment.center,
+                            fit: BoxFit.cover,
+                            animation: "Noon",
                           ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              'Flood',
+                              style: TextStyle(
+                                  color: mainColor,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize:
+                                      MediaQuery.of(context).size.height / 20),
+                            ),
+                          ],
                         ),
                       ],
                     )
@@ -77,14 +86,28 @@ class _FloodPageState extends State<FloodPage> {
                   if (!playAlarm) {
                     advancedPlayer.stop();
                   } else {
-                    advancedPlayer =
-                        (await AudioCache().loop('audio/loud_alarm.mp3')) as AudioPlayer;
+                    advancedPlayer = (await AudioCache()
+                        .loop('audio/loud_alarm.mp3')) as AudioPlayer;
                   }
                 },
                 child: Icon(
                   playAlarm == true
                       ? FontAwesomeIcons.solidBellSlash
                       : FontAwesomeIcons.solidBell,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: FlatButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/share_location_page');
+                },
+                child: Text(
+                  'Share Location',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
@@ -138,18 +161,37 @@ class _FloodPageState extends State<FloodPage> {
                     controller: _controller,
                     children: <Widget>[
                       ListView.builder(
-                        itemCount: todo.length,
+                        itemCount: floodsTodo.length,
                         itemBuilder: (context, index) {
                           return ListTile(
                             leading: Icon(
                               FontAwesomeIcons.solidCircle,
                               size: MediaQuery.of(context).size.height / 75,
                             ),
-                            title: Text(todo[index].toString()),
+                            title: Text(floodsTodo[index].toString()),
                           );
                         },
                       ),
-                      Container(),
+                      ListView.builder(
+                        itemCount: todo.length,
+                        itemBuilder: (context, index) {
+                          return Card(
+                            child: ListTile(
+                              title: Text(todo[index].toString()),
+                              subtitle: Text('Published on: ' +
+                                  time.day.toString() +
+                                  '/' +
+                                  time.month.toString() +
+                                  '/' +
+                                  time.year.toString() +
+                                  ' ' +
+                                  time.hour.toString() +
+                                  ':' +
+                                  time.second.toString()),
+                            ),
+                          );
+                        },
+                      ),
                     ],
                   ),
                 ),

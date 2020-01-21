@@ -1,5 +1,6 @@
 import 'package:audio/audio.dart';
 import 'package:audioplayers/audio_cache.dart';
+import 'package:dont_panic_customer/constants.dart';
 import 'package:dont_panic_customer/models/misc.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:marquee/marquee.dart';
 
 class CyclonePage extends StatefulWidget {
+  CyclonePage({this.id});
+  final String id;
   @override
   _CyclonePageState createState() => _CyclonePageState();
 }
@@ -17,6 +20,7 @@ class _CyclonePageState extends State<CyclonePage> {
   bool playAlarm = false;
   var top = 0.0;
   TabController _controller;
+  DateTime time = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +30,7 @@ class _CyclonePageState extends State<CyclonePage> {
           expandedHeight: MediaQuery.of(context).size.height * 0.7,
           floating: false,
           pinned: true,
-          backgroundColor: Colors.indigoAccent,
+          backgroundColor: top > 80 ? Colors.white : Colors.indigoAccent,
           flexibleSpace: LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               top = constraints.biggest.height;
@@ -34,28 +38,28 @@ class _CyclonePageState extends State<CyclonePage> {
                 background: Stack(
                   children: <Widget>[
                     FlareActor(
-                      "assets/flares/ResizingHouse.flr",
+                      "assets/flares/cyclone.flr",
                       alignment: Alignment.center,
                       fit: BoxFit.cover,
-                      animation: "Demo Mode",
+                      animation: "Untitled",
                     ),
                     Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: <Widget>[
-                              FloatingActionButton(
-                                backgroundColor: Colors.indigoAccent,
-                                onPressed: () {},
-                                child: Icon(
-                                  Icons.call,
-                                ),
-                              ),
-                            ],
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              'Cyclone',
+                              style: TextStyle(
+                                  color: mainColor,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize:
+                                      MediaQuery.of(context).size.height / 20),
+                            ),
+                          ],
                         ),
                       ],
                     )
@@ -85,6 +89,20 @@ class _CyclonePageState extends State<CyclonePage> {
                   playAlarm == true
                       ? FontAwesomeIcons.solidBellSlash
                       : FontAwesomeIcons.solidBell,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: FlatButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/share_location_page');
+                },
+                child: Text(
+                  'Share Location',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
@@ -138,18 +156,37 @@ class _CyclonePageState extends State<CyclonePage> {
                     controller: _controller,
                     children: <Widget>[
                       ListView.builder(
-                        itemCount: todo.length,
+                        itemCount: cycloneTodo.length,
                         itemBuilder: (context, index) {
                           return ListTile(
                             leading: Icon(
                               FontAwesomeIcons.solidCircle,
                               size: MediaQuery.of(context).size.height / 75,
                             ),
-                            title: Text(todo[index].toString()),
+                            title: Text(cycloneTodo[index].toString()),
                           );
                         },
                       ),
-                      Container(),
+                      ListView.builder(
+                        itemCount: todo.length,
+                        itemBuilder: (context, index) {
+                          return Card(
+                            child: ListTile(
+                              title: Text(todo[index].toString()),
+                              subtitle: Text('Published on: ' +
+                                  time.day.toString() +
+                                  '/' +
+                                  time.month.toString() +
+                                  '/' +
+                                  time.year.toString() +
+                                  ' ' +
+                                  time.hour.toString() +
+                                  ':' +
+                                  time.second.toString()),
+                            ),
+                          );
+                        },
+                      ),
                     ],
                   ),
                 ),

@@ -115,6 +115,20 @@ class _DefaultMainPageState extends State<DefaultMainPage> {
                 ),
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: FlatButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/share_location_page');
+                },
+                child: Text(
+                  'Share Location',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
         SliverList(

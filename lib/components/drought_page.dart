@@ -1,5 +1,7 @@
 import 'package:audio/audio.dart';
 import 'package:audioplayers/audio_cache.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dont_panic_customer/constants.dart';
 import 'package:dont_panic_customer/models/misc.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +9,11 @@ import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:marquee/marquee.dart';
 
+final _firestore = Firestore.instance;
+
 class DroughtPage extends StatefulWidget {
+  DroughtPage({this.id});
+  final String id;
   @override
   _DroughtPageState createState() => _DroughtPageState();
 }
@@ -17,6 +23,7 @@ class _DroughtPageState extends State<DroughtPage> {
   bool playAlarm = false;
   var top = 0.0;
   TabController _controller;
+  DateTime time = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -34,28 +41,28 @@ class _DroughtPageState extends State<DroughtPage> {
                 background: Stack(
                   children: <Widget>[
                     FlareActor(
-                      "assets/flares/ResizingHouse.flr",
+                      "assets/flares/exclamation.flr",
                       alignment: Alignment.center,
                       fit: BoxFit.cover,
-                      animation: "Demo Mode",
+                      animation: "appear",
                     ),
                     Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: <Widget>[
-                              FloatingActionButton(
-                                backgroundColor: Colors.indigoAccent,
-                                onPressed: () {},
-                                child: Icon(
-                                  Icons.call,
-                                ),
-                              ),
-                            ],
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            /*Text(
+                              'Drought',
+                              style: TextStyle(
+                                  color: mainColor,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize:
+                                      MediaQuery.of(context).size.height / 20),
+                            ),*/
+                          ],
                         ),
                       ],
                     )
@@ -88,6 +95,20 @@ class _DroughtPageState extends State<DroughtPage> {
                 ),
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: FlatButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/share_location_page');
+                },
+                child: Text(
+                  'Share Location',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
         SliverList(
@@ -97,7 +118,7 @@ class _DroughtPageState extends State<DroughtPage> {
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height / 10,
                 child: Marquee(
-                  text: 'This is the cyclone page.',
+                  text: 'This is the drought page.',
                   scrollAxis: Axis.horizontal,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   blankSpace: 20.0,
@@ -138,18 +159,62 @@ class _DroughtPageState extends State<DroughtPage> {
                     controller: _controller,
                     children: <Widget>[
                       ListView.builder(
-                        itemCount: todo.length,
+                        itemCount: droughtTodo.length,
                         itemBuilder: (context, index) {
                           return ListTile(
                             leading: Icon(
                               FontAwesomeIcons.solidCircle,
                               size: MediaQuery.of(context).size.height / 75,
                             ),
-                            title: Text(todo[index].toString()),
+                            title: Text(droughtTodo[index].toString()),
                           );
                         },
                       ),
-                      Container(),
+                      /*Container(
+                        child: StreamBuilder(
+                          stream: _firestore
+                              .collection('calamities')
+                              .document(widget.id)
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData) {
+                              print(widget.id);
+                              return CircularProgressIndicator();
+                            }
+                            List updates = snapshot.data['updates'];
+                            return ListView.builder(
+                              itemCount: updates.length,
+                              itemBuilder: (context, index) {
+                                return Card(
+                                  child: ListTile(
+                                    leading: Text(updates[index]),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ),*/
+                      ListView.builder(
+                        itemCount: todo.length,
+                        itemBuilder: (context, index) {
+                          return Card(
+                            child: ListTile(
+                              title: Text(todo[index].toString()),
+                              subtitle: Text('Published on: ' +
+                                  time.day.toString() +
+                                  '/' +
+                                  time.month.toString() +
+                                  '/' +
+                                  time.year.toString() +
+                                  ' ' +
+                                  time.hour.toString() +
+                                  ':' +
+                                  time.second.toString()),
+                            ),
+                          );
+                        },
+                      ),
                     ],
                   ),
                 ),
